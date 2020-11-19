@@ -72,4 +72,10 @@ class TheLoaiController extends Controller
         
     }
     
+    public function postXoa($id) 
+    {
+        $theloai = TheLoai::find($id);
+        $theloai->delete();
+        return redirect('admin/theloai/danhsach')->with('thongbao', 'Xóa thành công ' . $theloai->Ten);
+    }
 }
