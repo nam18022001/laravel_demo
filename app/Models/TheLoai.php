@@ -13,11 +13,11 @@ class TheLoai extends Model
     
     public function loaitin()
     {
-        return $this->hasMany('App\LoaiTin', 'idTheLoai', 'id');
+        return $this->hasMany('App\Models\LoaiTin', 'idTheLoai', 'id');
     }
     public function tintuc()
     {
-        return $this -> hasManyThrough('App\Tintuc', 'App\LoaiTin', 'idTheLoai', 'idLoaiTin', 'id');
+        return $this -> hasManyThrough('App\Models\Tintuc', 'App\Models\LoaiTin', 'idTheLoai', 'idLoaiTin', 'id');
     }
 
 }

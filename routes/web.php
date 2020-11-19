@@ -1,4 +1,9 @@
 <?php
+// namespace App\Http\Controllers;
+
+use App\Http\Controllers\TheLoaiController;
+use App\Http\Controllers\LoaiTinController;
+use App\Http\Controllers\UserController;
 
 use Illuminate\Support\Facades\Route;
 
@@ -17,6 +22,35 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('thu', function () {
-    return view('admin.theloai.danhsach');
+
+Route::group(['prefix' => 'admin'], function () {
+    Route::group(['prefix' => 'theloai'], function () {
+        Route::get('danhsach', [TheLoaiController::class, 'getDanhSach']);
+
+        Route::get('sua/{id}', [TheLoaiController::class, 'getSua']);
+        Route::post('sua/{id}', [TheLoaiController::class, 'postSua']);
+        
+        Route::get('them', [TheLoaiController::class, 'getThem']);
+        Route::post('them', [TheLoaiController::class, 'postThem']);
+
+
+    });
+    Route::group(['prefix' => 'loaitin'], function () {
+        Route::get('danhsach', [LoaiTinController::class, 'getDanhSach']);
+        Route::get('sua', [LoaiTinController::class, 'getSua']);
+        Route::get('them', [LoaiTinController::class, 'getThem']);
+    });
+    Route::group(['prefix' => 'tintuc'], function () {
+        Route::get('danhsach', [TinTucController::class, 'getDanhSach']);
+        Route::get('sua', [TinTucController::class, 'getSua']);
+        Route::get('them', [TinTucController::class, 'getThem']);
+
+    });
+    Route::group(['prefix' => 'user'], function () {
+        Route::get('danhsach', [UserController::class, 'getDanhSach']);
+        Route::get('sua', [UserController::class, 'getSua']);
+        Route::get('them', [UserController::class, 'getThem']);
+
+    });
+    
 });
