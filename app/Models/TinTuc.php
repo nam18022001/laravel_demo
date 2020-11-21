@@ -12,10 +12,10 @@ class TinTuc extends Model
 
     public function  loaitin()
     {
-        return $this -> belongsTo('App\LoaiTin', 'idLoaiTin', 'id');
+        return $this -> belongsTo('App\Models\LoaiTin', 'idLoaiTin', 'id');
     }
     public function comment()
     {
-        return $this -> hasmany('App\Comment', 'idTinTuc', 'id');
+        return $this -> hasmany('App\Models\Comment', 'idTinTuc', 'id');
     }
 }

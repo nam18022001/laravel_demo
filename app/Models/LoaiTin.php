@@ -12,11 +12,11 @@ class LoaiTin extends Model
 
     public function theloai()
     {
-        return $this->belongsTo('App\TheLoai', 'idTheLoai', 'id');
+        return $this->belongsTo('App\Models\TheLoai', 'idTheLoai', 'id');
     }
 
     public function tintuc()
     {
-        return $this->hasMany('App\Tintuc', 'idLoaiTin', 'id');
+        return $this->hasMany(' App\Models\Tintuc', 'idLoaiTin', 'id');
     }
 }

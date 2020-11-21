@@ -12,10 +12,10 @@ class Comment extends Model
 
     public function tintuc()
     {
-        return $this->belongsTo('App\Tintuc', 'idTinTuc', 'id');
+        return $this->belongsTo('App\Models\Tintuc', 'idTinTuc', 'id');
     }
     public function user()
     {
-        return $this->belongsTo('App\User', 'idUser', 'id');
+        return $this->belongsTo('App\Models\User', 'idUser', 'id');
     }
 }

@@ -13,7 +13,7 @@
                             <!-- /input-group -->
                         </li>
                         <li>
-                            <a href="#"><i class="fa fa-dashboard fa-fw"></i> Dashboard</a>
+                            <a href="{{url('#')}}"><i class="fa fa-dashboard fa-fw"></i> Dashboard</a>
                         </li>
                         <li>
                             <a href="#"><i class="fa fa-bar-chart-o fa-fw"></i> Thể Loại<span class="fa arrow"></span></a>
@@ -28,13 +28,37 @@
                             <!-- /.nav-second-level -->
                         </li>
                         <li>
-                            <a href="#"><i class="fa fa-cube fa-fw"></i> Product<span class="fa arrow"></span></a>
+                            <a href="#"><i class="fa fa-cube fa-fw"></i> Loại Tin<span class="fa arrow"></span></a>
                             <ul class="nav nav-second-level">
                                 <li>
-                                    <a href="#">List Product</a>
+                                    <a href="{{url('admin/loaitin/danhsach')}}">Danh sách</a>
                                 </li>
                                 <li>
-                                    <a href="#">Add Product</a>
+                                    <a href="{{url('admin/loaitin/them')}}">Thêm</a>
+                                </li>
+                            </ul>
+                            <!-- /.nav-second-level -->
+                        </li>
+                        <li>
+                            <a href="#"><i class="fa fa-bar-chart-o fa-fw"></i> Tin Tức<span class="fa arrow"></span></a>
+                            <ul class="nav nav-second-level">
+                                <li>
+                                    <a href="{{url('admin/tintuc/danhsach')}}">Danh sách</a>
+                                </li>
+                                <li>
+                                    <a href="{{url('admin/tintuc/them')}}">Thêm</a>
+                                </li>
+                            </ul>
+                            <!-- /.nav-second-level -->
+                        </li>
+                        <li>
+                            <a href="#"><i class="fa fa-cube fa-fw"></i> Slide<span class="fa arrow"></span></a>
+                            <ul class="nav nav-second-level">
+                                <li>
+                                    <a href="{{url('admin/slide/danhsach')}}">Danh sách</a>
+                                </li>
+                                <li>
+                                    <a href="{{url('admin/slide/them')}}">Thêm</a>
                                 </li>
                             </ul>
                             <!-- /.nav-second-level -->
@@ -43,10 +67,10 @@
                             <a href="#"><i class="fa fa-users fa-fw"></i> User<span class="fa arrow"></span></a>
                             <ul class="nav nav-second-level">
                                 <li>
-                                    <a href="#">List User</a>
+                                    <a href="{{url('admin/user/danhsach')}}">Danh sách</a>
                                 </li>
                                 <li>
-                                    <a href="#">Add User</a>
+                                    <a href="{{url('admin/user/them')}}">Thêm</a>
                                 </li>
                             </ul>
                             <!-- /.nav-second-level -->
