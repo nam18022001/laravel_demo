@@ -5,6 +5,7 @@ use App\Http\Controllers\TheLoaiController;
 use App\Http\Controllers\LoaiTinController;
 use App\Http\Controllers\TinTucController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\AjaxController;
 
 use Illuminate\Support\Facades\Route;
 
@@ -48,11 +49,17 @@ Route::group(['prefix' => 'admin'], function () {
         
         Route::get('xoa/{id}', [LoaiTinController::class, 'postXoa']);
 
+
+
     });
     Route::group(['prefix' => 'tintuc'], function () {
         Route::get('danhsach', [TinTucController::class, 'getDanhSach']);
-        Route::get('sua', [TinTucController::class, 'getSua']);
+
+        Route::get('sua/{id}', [TinTucController::class, 'getSua']);
+        Route::post('sua/{id}', [TinTucController::class, 'postSua']);
+
         Route::get('them', [TinTucController::class, 'getThem']);
+        Route::post('them', [TinTucController::class, 'postThem']);
 
         Route::get('xoa/{id}', [TinTucController::class, 'postXoa']);
 
@@ -61,7 +68,11 @@ Route::group(['prefix' => 'admin'], function () {
         Route::get('danhsach', [UserController::class, 'getDanhSach']);
         Route::get('sua', [UserController::class, 'getSua']);
         Route::get('them', [UserController::class, 'getThem']);
+        Route::post('them', [UserController::class, 'postThem']);
+
 
     });
-    
+    Route::group(['prefix' => 'ajax'], function () {
+        Route::get('loaitin/{idTheLoai}', [AjaxController::class, 'getLoaiTin'])->name('idTheLoai.show');
+    });
 });

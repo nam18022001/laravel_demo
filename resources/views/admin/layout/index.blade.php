@@ -36,6 +36,8 @@
         <!-- /#page-wrapper -->
 
     </div>
+
+    <script type="text/javascript" language="javascript" src="{{url('admin_asset/ckeditor/ckeditor.js')}}" ></script>
     <!-- /#wrapper -->
 
     <!-- jQuery -->

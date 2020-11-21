@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
+use Illuminate\Support\Str;
+
 use App\Models\TinTuc;
 use App\Models\TheLoai;
 use App\Models\LoaiTin;
@@ -21,11 +23,13 @@ class TinTucController extends Controller
     public function getSua($id)
     {
         $theloai = TheLoai::all();
+        $loaitin = LoaiTin::all();
         $TinTuc = TinTuc::find($id);
 
-        return view('admin.TinTuc.sua', [
-            'TinTuc' => $TinTuc,
-            'theloai' => $theloai
+        return view('admin.tintuc.sua', [
+            'tintuc' => $TinTuc,
+            'theloai' => $theloai,
+            'loaitin' => $loaitin
         ]);
         
     }
@@ -33,32 +37,78 @@ class TinTucController extends Controller
     public function postSua(Request $request, $id)
     {
         $TinTuc = TinTuc::find($id);
-        $this->validate($request, 
+        $this->validate($request,
             [
                 'TheLoai' => 'required',
-                'txtCateName' => 'required|unique:TinTuc,Ten|min:3|max:100',
-            ],
+                'LoaiTin' => 'required',
+
+                'TieuDe' => 'required|unique:TinTuc,TieuDe|min:3|max:100',
+                'TomTat' => 'required|min:3',
+                'NoiDung' => 'required|min:3',
+
+            ], 
+
             [
                 'TheLoai.required' =>'Chọn thể loại đã bạn ới',
-                'txtCateName.required' => 'Nhập loại tin đi nè ',
-                'txtCateName.unique' => 'Loại Tin đã tồn tại. Vui lòng nhập tên thể loại khác',
-                'txtCateName.min' => 'Nhập nhiều hơn 3 chữ bạn ơi ',
-                'txtCateName.max' => 'Nhập ít lại khoảng 100 chữ thui bạn'
-            ]
-    );
-        $TinTuc->idTheLoai = $request->TheLoai;
-        $TinTuc->Ten = $request->txtCateName;
-        $TinTuc->TenKhongDau = changeTitle($request->txtCateName);
-        $TinTuc->save();
+                'LoaiTin.required' =>'Chọn loại tin đi nè',
 
-        return redirect('admin/TinTuc/sua/'.$id)->with('thongbao', 'Sửa thành công');
+                'TieuDe.required' => 'Nhập Tiêu đề đi nè ',
+                'TieuDe.unique' => 'Tiêu đề có rùi ',
+                'TieuDe.min' => 'Nhập Tiêu đề nhiều hơn 3 chữ bạn ơi ',
+                'TieuDe.max' => 'Nhập Tiêu đề ít lại khoảng 100 chữ thui bạn',
+
+                'TomTat.required' => 'Nhập Tóm tắt đi nè ',
+                'TomTat.min' => 'Nhập Tóm tắt nhiều hơn 3 chữ bạn ơi ',
+
+                'NoiDung.required' => 'Nhập Nội dung đi nè ',
+                'NoiDung.min' => 'Nhập Nội dung nhiều hơn 3 chữ bạn ơi '
+            ]);
+
+            $TinTuc->TieuDe = $request->TieuDe;
+            $TinTuc->TieuDeKhongDau = changeTitle($request->TieuDe);
+            $TinTuc->TomTat = $request->TomTat;
+            $TinTuc->NoiDung = $request->NoiDung;
+            $TinTuc->NoiBat = $request->NoiBat;
+            
+            $TinTuc->idLoaiTin = $request->LoaiTin;
+
+            if ($request->hasFile('Hinh')) {
+                # code...   
+                $file = $request->file('Hinh');
+                $fileType = $file->getClientOriginalExtension('Hinh');
+                if ($fileType == "png" || $fileType == "jpg" || $fileType == "gif" || $fileType == "jpeg") { 
+                # code...
+                    $filename = $file->getClientOriginalName('Hinh');
+
+                    $Hinh =  Str::random(5)."-".$filename;
+
+                    while (file_exists('upload/tintuc'.$Hinh)) {
+                        # code...
+                        $Hinh =  Str::random(5)."-".$filename;
+
+                    }
+                    $file->move('upload/tintuc', $Hinh);
+
+                    $TinTuc->Hinh = $Hinh;
+                }else{
+                    return redirect('admin/tintuc/them')->with('thongbaoimg', 'Không phải định dạng file ảnh');
+                    
+                }
+            }
+            $TinTuc->save();
+
+        return redirect('admin/tintuc/sua/'.$id)->with('thongbao', 'Sửa thành công');
 
     }
 
     public function getThem()
     {
         $theloai = TheLoai::all();
-        return view('admin.TinTuc.them', ['theloai'=>$theloai]);
+        $loaitin = LoaiTin::all();
+        return view('admin.TinTuc.them', [
+            'theloai'=>$theloai,
+            'loaitin'=>$loaitin
+            ]);
         
     }
     public function postThem(Request $request)
@@ -66,24 +116,67 @@ class TinTucController extends Controller
         $this->validate($request,
             [
                 'TheLoai' => 'required',
-                'txtCateName' => 'required|unique:TinTuc,Ten|min:3|max:100',
+                'LoaiTin' => 'required',
+
+                'TieuDe' => 'required|unique:TinTuc,TieuDe|min:3|max:100',
+                'TomTat' => 'required|min:3',
+                'NoiDung' => 'required|min:3',
+
             ], 
 
             [
                 'TheLoai.required' =>'Chọn thể loại đã bạn ới',
-                'txtCateName.required' => 'Nhập loại tin đi nè ',
-                'txtCateName.unique' => 'Loại Tin có rùi ',
-                'txtCateName.min' => 'Nhập nhiều hơn 3 chữ bạn ơi ',
-                'txtCateName.max' => 'Nhập ít lại khoảng 100 chữ thui bạn'
+                'LoaiTin.required' =>'Chọn loại tin đi nè',
+
+                'TieuDe.required' => 'Nhập Tiêu đề đi nè ',
+                'TieuDe.unique' => 'Tiêu đề có rùi ',
+                'TieuDe.min' => 'Nhập Tiêu đề nhiều hơn 3 chữ bạn ơi ',
+                'TieuDe.max' => 'Nhập Tiêu đề ít lại khoảng 100 chữ thui bạn',
+
+                'TomTat.required' => 'Nhập Tóm tắt đi nè ',
+                'TomTat.min' => 'Nhập Tóm tắt nhiều hơn 3 chữ bạn ơi ',
+
+                'NoiDung.required' => 'Nhập Nội dung đi nè ',
+                'NoiDung.min' => 'Nhập Nội dung nhiều hơn 3 chữ bạn ơi '
             ]);
 
             $TinTuc = new TinTuc();
-            $TinTuc->idTheLoai = $request->TheLoai;
-            $TinTuc->Ten = $request->txtCateName;
-            $TinTuc->TenKhongDau = changeTitle($request->txtCateName);
+            $TinTuc->TieuDe = $request->TieuDe;
+            $TinTuc->TieuDeKhongDau = changeTitle($request->TieuDe);
+            $TinTuc->TomTat = $request->TomTat;
+            $TinTuc->NoiDung = $request->NoiDung;
+            $TinTuc->NoiBat = $request->NoiBat;
+            
+            $TinTuc->idLoaiTin = $request->LoaiTin;
+
+            if ($request->hasFile('Hinh')) {
+                # code...   
+                $file = $request->file('Hinh');
+                $fileType = $file->getClientOriginalExtension('Hinh');
+                if ($fileType == "png" || $fileType == "jpg" || $fileType == "gif" || $fileType == "jpeg") { 
+                # code...
+                    $filename = $file->getClientOriginalName('Hinh');
+
+                    $Hinh =  Str::random(5)."-".$filename;
+
+                    while (file_exists('upload/tintuc'.$Hinh)) {
+                        # code...
+                        $Hinh =  Str::random(5)."-".$filename;
+
+                    }
+                    $file->move('upload/tintuc', $Hinh);
+
+                    $TinTuc->Hinh = $Hinh;
+                }else{
+                    return redirect('admin/tintuc/them')->with('thongbaoimg', 'Không phải định dạng file ảnh');
+                    
+                }
+            }else{
+                $TinTuc->Hinh = "Không có hình ảnh";
+            }
             $TinTuc->save();
 
-        return redirect('admin/TinTuc/them')->with('thongbao', 'Thêm thành công');
+        return redirect('admin/tintuc/them')->with('thongbao', 'Thêm thành công');
         
     }
     
@@ -91,6 +184,6 @@ class TinTucController extends Controller
     {
         $TinTuc = TinTuc::find($id);
         $TinTuc->delete();
-        return redirect('admin/tintuc/danhsach')->with('thongbao', 'Xóa thành công ' . $TinTuc->Ten);
+        return redirect('admin/tintuc/danhsach')->with('thongbao', 'Xóa thành công ' . $TinTuc->TieuDe);
     }
 }
