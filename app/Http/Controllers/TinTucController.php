@@ -9,6 +9,7 @@ use Illuminate\Support\Str;
 use App\Models\TinTuc;
 use App\Models\TheLoai;
 use App\Models\LoaiTin;
+use App\Models\Comment;
 
 
 class TinTucController extends Controller
@@ -91,7 +92,7 @@ class TinTucController extends Controller
 
                     $TinTuc->Hinh = $Hinh;
                 }else{
-                    return redirect('admin/tintuc/them')->with('thongbaoimg', 'Không phải định dạng file ảnh');
+                    return redirect('admin/tintuc/them')->with('thongbaoimg', 'Không phải định dạng file ảnh, vui lòng chọn file có đuôi PNG, JPG, JPEG, GIF');
                     
                 }
             }
@@ -183,6 +184,13 @@ class TinTucController extends Controller
     public function postXoa($id) 
     {
         $TinTuc = TinTuc::find($id);
+        $image_path = 'upload/tintuc/' . $TinTuc->Hinh;
+
+        if (file_exists('upload/tintuc/'.$TinTuc->Hinh)) {
+
+            File::delete($image_path);
+            
+        }
         $TinTuc->delete();
         return redirect('admin/tintuc/danhsach')->with('thongbao', 'Xóa thành công ' . $TinTuc->TieuDe);
     }

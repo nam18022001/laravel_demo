@@ -5,12 +5,17 @@ namespace App\Models;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Notifications\Notifiable;
 
-class User extends Authenticatable
+class User extends Authenticatable implements MustVerifyEmail
 {
     use HasFactory, Notifiable;
 
+    public function comment()
+    {
+        return $this -> hasMany('App\Models\Comment', 'idUser', 'id');
+    }
     /**
      * The attributes that are mass assignable.
      *
@@ -38,8 +43,5 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
-    public function comment()
-    {
-        return $this -> hasMany('App\Comment', 'idUser', 'id');
-    }
+    
 }
