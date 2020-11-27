@@ -100,6 +100,38 @@
             </div>
         </div>
         <!-- /.row -->
+
+
+        <h1 class="page-header">Comment
+                    <small>Xóa</small>
+                </h1>
+        @if(session('thongbaocmt'))
+            <div class="alert alert-success">
+                {{session('thongbaocmt')}}
+            </div>
+        @endif
+        <table class="table table-striped table-bordered table-hover" id="dataTables-example">
+            <thead>
+                <tr align="center">
+                    <th>ID</th>
+                    <th>Người dùng</th>
+                    <th>Nội Dung</th>
+                    <th>Ngày bình luận</th>
+                    <th>Delete</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach($tintuc->comment as $value)
+                <tr class="odd gradeX" align="center">
+                    <td>{{$value->id}}</td>
+                    <td>{{$value->user->name}}</td>
+                    <td>{{$value->NoiDung}}</td>
+                    <td>{{$value->created_at}}</td>
+                    <td class="center"><i class="fa fa-trash-o  fa-fw"></i><a href="{{url('admin/comment/xoa')}}/{{$value->id}}/{{$tintuc->id}}"> Xóa</a></td>
+                @endforeach
+                </tr>
+            </tbody>
+        </table>
     </div>
     <!-- /.container-fluid -->
 </div>
