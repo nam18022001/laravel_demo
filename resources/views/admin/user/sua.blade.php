@@ -22,15 +22,15 @@
                                 @endforeach
                             @endif
                             
-                            @if(session('thongbao'))
+                            @if(session('thongbaoedit'))
                                 <div class="alert alert-success">
-                                    {{session('thongbao')}} &nbsp;
+                                    {{session('thongbaoedit')}} &nbsp;
                                     <a href="{{url('admin/user/danhsach')}}" class="btn btn-success">Quay về trang danh sách</a>
                                 </div>
                             @endif
                             <div class="form-group">
                                 <label>Tên</label>
-                                <input class="form-control" name="name" placeholder="Điền tên muốn sửa" value="{{$user->name}}" />
+                                <input class="form-control" name="username" placeholder="Điền tên muốn sửa" value="{{$user->name}}" />
                             </div>
                             <div class="form-group">
                                 <label>Email</label>
@@ -38,13 +38,13 @@
                             </div>
                             <div class="form-group">
                                 <label for="mu">Muốn đổi mật khẩu bấm vào đây</label><br>
-                                <input type="checkbox" class="" name="" id="mu"><br>
+                                <input style="display: none;" type="checkbox" class="" name="mu" id="mu"><br>
                                 <label>Password</label>
-                                <input class="form-control" type="password" name="pass" placeholder="Điền pass muốn sửa" disabled />
+                                <input class="form-control password" type="password" name="pass" placeholder="Điền pass muốn sửa" disabled />
                             </div>
                            <div class="form-group">
                                 <label>Password Retype</label>
-                                <input class="form-control" type="password" name="repass" placeholder="Điền pass muốn sửa" disabled/>
+                                <input class="form-control password" type="password" name="repass" placeholder="Điền pass muốn sửa" disabled/>
                             </div>
                             <div class="form-group">
                                 <label>Quyền</label> 
@@ -79,4 +79,19 @@
             <!-- /.container-fluid -->
         </div>
 
+@endsection
+
+@section('script')
+    <script>
+        $(document).ready(function(){
+            $('#mu').change(function(){
+                if($(this).is(':checked')){
+                    $('.password').removeAttr('disabled');
+                }
+                else{
+                    $('.password').attr('disabled', '');
+                }
+            });
+        });
+    </script>
 @endsection

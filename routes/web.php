@@ -9,6 +9,9 @@ use App\Http\Controllers\AjaxController;
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\SlideController;
 
+use App\Http\Controllers\PageController;
+
+
 
 use Illuminate\Support\Facades\Route;
 
@@ -23,12 +26,20 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/', [PageController::class, 'index']);
+
+Route::get('lien-he', [PageController::class, 'lienhe']);
+
+Route::get('admin/login', [UserController::class, 'loginAdmin']);
+Route::get('admin', [UserController::class, 'loginAdmin']);
+
+Route::get('admin/logout', [UserController::class, 'logoutAdmin']);
 
 
-Route::group(['prefix' => 'admin'], function () {
+Route::post('admin/login', [UserController::class, 'postloginAdmin']);
+
+
+Route::group(['prefix' => 'admin', 'middleware' => 'adminlogin'], function () {
     Route::group(['prefix' => 'theloai'], function () {
         Route::get('danhsach', [TheLoaiController::class, 'getDanhSach']);
 
@@ -97,4 +108,6 @@ Route::group(['prefix' => 'admin'], function () {
     Route::group(['prefix' => 'ajax'], function () {
         Route::get('loaitin/{idTheLoai}', [AjaxController::class, 'getLoaiTin'])->name('idTheLoai.show');
     });
+    
 });
+
